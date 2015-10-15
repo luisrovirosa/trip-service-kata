@@ -30,6 +30,9 @@ class UserSession
         );
     }
 
+    /**
+     * @return User
+     */
     public function getLoggedUser()
     {
         throw new DependentClassCalledDuringUnitTestException(

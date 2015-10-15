@@ -2,10 +2,11 @@
 
 namespace Test\TripServiceKata\Trip;
 
-use PHPUnit_Framework_TestCase;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use TripServiceKata\Trip\TripService;
+use TripServiceKata\User\User;
 
-class TripServiceTest extends PHPUnit_Framework_TestCase
+class TripServiceTest extends ProphecyTestCase
 {
     /**
      * @var TripService
@@ -14,12 +15,15 @@ class TripServiceTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tripService = new TripService();
+        $this->tripService = new TestableTripService();
     }
 
     /** @test */
     public function  it_does_something()
     {
-        $this->fail('This test has not been implemented yet.');
+        /** @var User $user */
+        $user = $this->prophesize('TripServiceKata\User\User')->reveal();
+
+        $this->tripService->getTripsByUser($user);
     }
 }

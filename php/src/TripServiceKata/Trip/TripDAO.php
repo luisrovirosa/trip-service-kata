@@ -7,6 +7,10 @@ use TripServiceKata\Exception\DependentClassCalledDuringUnitTestException;
 
 class TripDAO
 {
+    /**
+     * @param User $user
+     * @returns Trip[]
+     */
     public static function findTripsByUser(User $user)
     {
         throw new DependentClassCalledDuringUnitTestException(
