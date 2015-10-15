@@ -24,16 +24,13 @@ class TripServiceTest extends ProphecyTestCase
         $this->loggedUser = new User('Luis');
         $this->tripService = new TestableTripService($this->loggedUser);
         $this->userProphecy = $this->prophesize('TripServiceKata\User\User');
+        $this->userProphecy->getFriends()->willReturn([]);
     }
 
     /** @test */
     public function it_returns_an_empty_list_when_is_not_a_friend()
     {
-        $this->userProphecy->getFriends()->willReturn([]);
-
-        $trips = $this->tripService->getTripsByUser($this->getUser());
-
-        $this->assertEquals([], $trips);
+        $this->assertEquals([], $this->getTripByUser());
     }
 
     /** @test */
@@ -41,8 +38,7 @@ class TripServiceTest extends ProphecyTestCase
     {
         $this->userProphecy->getFriends()->willReturn([$this->loggedUser]);
 
-        $trips = $this->tripService->getTripsByUser($this->getUser());
-        $this->assertGreaterThan(0, count($trips));
+        $this->assertGreaterThan(0, count($this->getTripByUser()));
     }
 
     /** @test */
@@ -60,5 +56,14 @@ class TripServiceTest extends ProphecyTestCase
     private function getUser()
     {
         return $this->userProphecy->reveal();
+    }
+
+    /**
+     * @return array|\TripServiceKata\Trip\Trip[]
+     * @throws \TripServiceKata\Exception\UserNotLoggedInException
+     */
+    private function getTripByUser()
+    {
+        return $this->tripService->getTripsByUser($this->getUser());
     }
 }
