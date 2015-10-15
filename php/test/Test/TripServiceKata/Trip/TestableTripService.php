@@ -12,18 +12,19 @@ class TestableTripService extends TripService
 
     /**
      * TestableTripService constructor.
+     * @param $loggedUser
      */
-    public function __construct()
+    public function __construct($loggedUser)
     {
-        $this->loggedUser = new User('Luis');
+        $this->loggedUser = $loggedUser;
     }
 
-    public function getLoggedUser()
+    protected function getLoggedUser()
     {
         return $this->loggedUser;
     }
 
-    public function tripListOf(User $user)
+    protected function tripListOf(User $user)
     {
         return [new Trip()];
     }
