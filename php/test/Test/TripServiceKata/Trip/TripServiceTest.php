@@ -19,10 +19,12 @@ class TripServiceTest extends ProphecyTestCase
     }
 
     /** @test */
-    public function  it_does_something()
+    public function it_returns_the_trips_of_a_friend()
     {
+        $userProphecy = $this->prophesize('TripServiceKata\User\User');
+        $userProphecy->getFriends()->willReturn([]);
         /** @var User $user */
-        $user = $this->prophesize('TripServiceKata\User\User')->reveal();
+        $user = $userProphecy->reveal();
 
         $this->tripService->getTripsByUser($user);
     }
