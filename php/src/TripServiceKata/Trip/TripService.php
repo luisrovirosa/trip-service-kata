@@ -32,16 +32,7 @@ class TripService
      */
     private function areFriends(User $user)
     {
-        $isFriend = false;
-        $loggedUser = $this->loggedUser();
-        foreach ($user->getFriends() as $friend) {
-            if ($friend == $loggedUser) {
-                $isFriend = true;
-                break;
-            }
-        }
-
-        return $isFriend;
+        return $user->isFriendOf($this->loggedUser());
     }
 
     /**
