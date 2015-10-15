@@ -10,6 +10,7 @@ use TripServiceKata\User\User;
 
 class TripServiceTest extends ProphecyTestCase
 {
+    const GUEST_USER = null;
     /** @var  User */
     private $loggedUser;
 
@@ -48,7 +49,7 @@ class TripServiceTest extends ProphecyTestCase
     public function it_throws_an_exception_when_the_user_is_lot_logged_in()
     {
         $this->setExpectedException('TripServiceKata\Exception\UserNotLoggedInException');
-        $tripService = new TestableTripService(null);
+        $tripService = new TestableTripService(self::GUEST_USER);
 
         $tripService->getTripsByUser($this->getUser());
     }
