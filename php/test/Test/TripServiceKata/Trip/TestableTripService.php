@@ -24,9 +24,13 @@ class TestableTripService extends TripService
         return $this->loggedUser;
     }
 
+    /**
+     * @param User $user
+     * @return Trip[]
+     */
     protected function tripListOf(User $user)
     {
-        return [new Trip()];
+        return $user->getTrips();
     }
 
 }

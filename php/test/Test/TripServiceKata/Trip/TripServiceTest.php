@@ -4,6 +4,7 @@ namespace Test\TripServiceKata\Trip;
 
 use Prophecy\PhpUnit\ProphecyTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use TripServiceKata\Trip\Trip;
 use TripServiceKata\Trip\TripService;
 use TripServiceKata\User\User;
 
@@ -37,8 +38,10 @@ class TripServiceTest extends ProphecyTestCase
     public function it_returns_the_trips_of_a_friend()
     {
         $this->userProphecy->getFriends()->willReturn([$this->loggedUser]);
+        $trips = [new Trip()];
+        $this->userProphecy->getTrips()->willReturn($trips);
 
-        $this->assertGreaterThan(0, count($this->getTripByUser()));
+        $this->assertEquals($trips, $this->getTripByUser());
     }
 
     /** @test */
