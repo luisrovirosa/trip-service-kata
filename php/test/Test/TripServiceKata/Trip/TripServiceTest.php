@@ -3,6 +3,7 @@
 namespace Test\TripServiceKata\Trip;
 
 use PHPUnit_Framework_TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use TripServiceKata\Trip\Trip;
 use TripServiceKata\Trip\TripService;
 use TripServiceKata\User\User;
@@ -27,14 +28,14 @@ class TripServiceTest extends PHPUnit_Framework_TestCase
         $this->loggedUser = new User('Luis');
         $this->nonFriend = $this->createNonFriend();
         $this->friend = $this->createFriend();
-        $this->tripService = new TestableTripService($this->loggedUser());
+        $this->tripService = new TestableTripService($this->userSessionMock($this->loggedUser));
     }
 
     /** @test */
     public function should_throw_an_exception_when_the_user_is_not_logged()
     {
         $this->setExpectedException('TripServiceKata\Exception\UserNotLoggedInException');
-        $tripService = new TestableTripService(self::GUEST_USER);
+        $tripService = new TestableTripService($this->userSessionMock(self::GUEST_USER));
         $tripService->getTripsByUser($this->anyUser());
     }
 
@@ -116,5 +117,19 @@ class TripServiceTest extends PHPUnit_Framework_TestCase
         $user->addTrip(new Trip('Secret trip'));
 
         return $user;
+    }
+
+    /**
+     * @param $loggedUser
+     * @return mixed
+     */
+    protected function userSessionMock($loggedUser)
+    {
+        /** @var ObjectProphecy $userSessionProphecy */
+        $userSessionProphecy = $this->prophesize('TripServiceKata\User\UserSession');
+        $userSessionProphecy->getLoggedUser()->willReturn($loggedUser);
+        $userSession = $userSessionProphecy->reveal();
+
+        return $userSession;
     }
 }
