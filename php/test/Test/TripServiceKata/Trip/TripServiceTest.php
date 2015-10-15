@@ -3,6 +3,7 @@
 namespace Test\TripServiceKata\Trip;
 
 use PHPUnit_Framework_TestCase;
+use TripServiceKata\Trip\Trip;
 use TripServiceKata\User\User;
 
 class TripServiceTest extends PHPUnit_Framework_TestCase
@@ -29,5 +30,20 @@ class TripServiceTest extends PHPUnit_Framework_TestCase
         $trips = $tripService->getTripsByUser($luis);
 
         $this->assertEquals([], $trips);
+    }
+
+    /** @test */
+    public function should_retrieve_the_lists_of_trips_of_a_friend()
+    {
+        $luis = new User('Luis');
+        $loggedUser = new User('Concha');
+        $luis->addFriend($loggedUser);
+        $trip = new Trip();
+        $luis->addTrip($trip);
+        $tripService = new TestableTripService($loggedUser);
+
+        $trips = $tripService->getTripsByUser($luis);
+
+        $this->assertEquals([$trip], $trips);
     }
 }

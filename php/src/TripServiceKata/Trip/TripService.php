@@ -21,7 +21,7 @@ class TripService
                 }
             }
             if ($isFriend) {
-                $tripList = TripDAO::findTripsByUser($user);
+                $tripList = $this->tripsOf($user);
             }
 
             return $tripList;
@@ -36,5 +36,15 @@ class TripService
     protected function loggedUser()
     {
         return UserSession::getInstance()->getLoggedUser();
+    }
+
+    /**
+     * @param User $user
+     * @return Trip[]
+     * @throws \TripServiceKata\Exception\DependentClassCalledDuringUnitTestException
+     */
+    protected function tripsOf(User $user)
+    {
+        return TripDAO::findTripsByUser($user);
     }
 }
