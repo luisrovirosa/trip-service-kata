@@ -38,19 +38,11 @@ class User
     }
 
     /**
-     * @param $loggedUser
+     * @param User $user
      * @return boolean
      */
-    public function isFriendOf($loggedUser)
+    public function isFriendOf(User $user)
     {
-        $isFriend = false;
-        foreach ($this->getFriends() as $friend) {
-            if ($friend == $loggedUser) {
-                $isFriend = true;
-                break;
-            }
-        }
-
-        return $isFriend;
+        return in_array($user, $this->getFriends());
     }
 }
