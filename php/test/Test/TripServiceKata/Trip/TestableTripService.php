@@ -17,7 +17,7 @@ class TestableTripService extends TripService
         $this->loggedUser = new User('Luis');
     }
 
-    protected function getLoggedUser()
+    public function getLoggedUser()
     {
         return $this->loggedUser;
     }

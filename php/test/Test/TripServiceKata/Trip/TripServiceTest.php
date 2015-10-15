@@ -9,7 +9,7 @@ use TripServiceKata\User\User;
 class TripServiceTest extends ProphecyTestCase
 {
     /**
-     * @var TripService
+     * @var TestableTripService
      */
     private $tripService;
 
@@ -34,7 +34,7 @@ class TripServiceTest extends ProphecyTestCase
     public function it_returns_the_trips_of_a_friend()
     {
         $userProphecy = $this->prophesize('TripServiceKata\User\User');
-        $userProphecy->getFriends()->willReturn([]);
+        $userProphecy->getFriends()->willReturn([$this->tripService->getLoggedUser()]);
         /** @var User $user */
         $user = $userProphecy->reveal();
 
