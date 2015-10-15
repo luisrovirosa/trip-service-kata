@@ -4,14 +4,19 @@ namespace Test\TripServiceKata\Trip;
 
 use PHPUnit_Framework_TestCase;
 use TripServiceKata\Trip\Trip;
+use TripServiceKata\Trip\TripService;
 use TripServiceKata\User\User;
 
 class TripServiceTest extends PHPUnit_Framework_TestCase
 {
     const UNUSED_USER = null;
     const GUEST_USER = null;
+    /** @var  User */
     private $nonFriend;
+    /** @var  User */
     private $friend;
+    /** @var  TripService */
+    private $tripService;
 
     /** @var  User */
     private $loggedUser;
@@ -20,11 +25,9 @@ class TripServiceTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->loggedUser = new User('Luis');
-        $this->nonFriend = new User('Luis');
-        $this->nonFriend->addTrip(new Trip('Secret trip'));
-        $this->friend = new User('Luis');
-        $this->friend->addFriend($this->loggedUser());
-        $this->friend->addTrip(new Trip('Barcelona'));
+        $this->nonFriend = $this->createNonFriend();
+        $this->friend = $this->createFriend();
+        $this->tripService = new TestableTripService($this->loggedUser());
     }
 
     /** @test */
@@ -89,10 +92,29 @@ class TripServiceTest extends PHPUnit_Framework_TestCase
      */
     private function trips($user)
     {
-        $tripService = new TestableTripService($this->loggedUser());
+        return $this->tripService->getTripsByUser($user);
+    }
 
-        $trips = $tripService->getTripsByUser($user);
+    /**
+     * @return User
+     */
+    protected function createFriend()
+    {
+        $user = new User('Luis');
+        $user->addFriend($this->loggedUser());
+        $user->addTrip(new Trip('Barcelona'));
 
-        return $trips;
+        return $user;
+    }
+
+    /**
+     * @return User
+     */
+    protected function createNonFriend()
+    {
+        $user = new User('Luis');
+        $user->addTrip(new Trip('Secret trip'));
+
+        return $user;
     }
 }
