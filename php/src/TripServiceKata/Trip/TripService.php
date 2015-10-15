@@ -11,13 +11,18 @@ class TripService
     /** @var  UserSession */
     private $userSession;
 
+    /** @var TripDAO */
+    private $tripDAO;
+
     /**
      * TripService constructor.
-     * @param $userSession
+     * @param UserSession $userSession
+     * @param TripDAO $tripDAO
      */
-    public function __construct($userSession)
+    public function __construct(UserSession $userSession, TripDAO $tripDAO)
     {
         $this->userSession = $userSession;
+        $this->tripDAO = $tripDAO;
     }
 
     public function getTripsByUser(User $user)
@@ -62,7 +67,7 @@ class TripService
      */
     protected function tripsOf(User $user)
     {
-        return TripDAO::findTripsByUser($user);
+        return $this->tripDAO->findTripsOf($user);
     }
 
 }
