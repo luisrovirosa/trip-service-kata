@@ -19,7 +19,7 @@ class TestableTripService extends TripService
 
     protected function loggedUser()
     {
-        $this->loggedUser;
+        return $this->loggedUser;
     }
 
 }
