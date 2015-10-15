@@ -19,6 +19,18 @@ class TripServiceTest extends ProphecyTestCase
     }
 
     /** @test */
+    public function it_returns_an_empty_list_when_is_not_a_friend()
+    {
+        $userProphecy = $this->prophesize('TripServiceKata\User\User');
+        $userProphecy->getFriends()->willReturn([]);
+        /** @var User $user */
+        $user = $userProphecy->reveal();
+
+        $trips = $this->tripService->getTripsByUser($user);
+        $this->assertEquals([], $trips);
+    }
+
+    /** @test */
     public function it_returns_the_trips_of_a_friend()
     {
         $userProphecy = $this->prophesize('TripServiceKata\User\User');
@@ -26,6 +38,7 @@ class TripServiceTest extends ProphecyTestCase
         /** @var User $user */
         $user = $userProphecy->reveal();
 
-        $this->tripService->getTripsByUser($user);
+        $trips = $this->tripService->getTripsByUser($user);
+        $this->assertGreaterThan(0, count($trips));
     }
 }
